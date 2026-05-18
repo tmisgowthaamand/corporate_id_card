@@ -87,21 +87,6 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/db-status')
-def db_status():
-    if db is not None:
-        try:
-            employees_count = db['employees'].count_documents({})
-            cards_count = db['generated_cards'].count_documents({})
-            return jsonify({
-                'connected': True, 
-                'database': MONGO_DB,
-                'employees': employees_count,
-                'generated_cards': cards_count
-            })
-        except Exception as e:
-            return jsonify({'connected': False, 'message': str(e)}), 503
-    return jsonify({'connected': False, 'message': 'Database not connected'}), 503
 
 
 @app.route('/upload-excel', methods=['POST'])
@@ -382,33 +367,6 @@ def get_generated():
                 files.append(f)
     return jsonify({'files': files})
 
-
-@app.route('/clear-output', methods=['POST'])
-def clear_output():
-    try:
-        if os.path.exists(OUTPUT_FOLDER):
-            for f in os.listdir(OUTPUT_FOLDER):
-                if f.endswith('.png'):
-                    os.remove(os.path.join(OUTPUT_FOLDER, f))
-        
-        if db is not None:
-            db['generated_cards'].delete_many({})
-            
-        return jsonify({'success': True})
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-
-@app.route('/api/load-from-db')
-def load_from_db():
-    if db is None:
-        return jsonify({'error': 'Database not connected'}), 503
-    try:
-        employees = list(db['employees'].find({}))
-        serialized_employees = [mongo_serialize(emp) for emp in employees]
-        return jsonify({'success': True, 'employees': serialized_employees, 'count': len(serialized_employees)})
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
 
 
 def generate_qr_code(data, size=200):
