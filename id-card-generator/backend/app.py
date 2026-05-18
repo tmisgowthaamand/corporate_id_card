@@ -22,9 +22,16 @@ app = Flask(__name__,
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB max upload
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
-OUTPUT_FOLDER = os.path.join(BASE_DIR, 'output')
-STATIC_GENERATED = os.path.join(FRONTEND_DIR, 'static', 'generated')
+
+# On Vercel, the filesystem is read-only except for /tmp
+if os.environ.get('VERCEL'):
+    UPLOAD_FOLDER = '/tmp/uploads'
+    OUTPUT_FOLDER = '/tmp/output'
+    STATIC_GENERATED = '/tmp/generated'
+else:
+    UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
+    OUTPUT_FOLDER = os.path.join(BASE_DIR, 'output')
+    STATIC_GENERATED = os.path.join(FRONTEND_DIR, 'static', 'generated')
 
 for folder in [UPLOAD_FOLDER, OUTPUT_FOLDER, STATIC_GENERATED]:
     os.makedirs(folder, exist_ok=True)
