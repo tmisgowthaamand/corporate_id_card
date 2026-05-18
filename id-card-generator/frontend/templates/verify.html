@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee ID Verification - {{ emp_id }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .verify-container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .verify-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .verify-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #22c55e;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .verify-badge.not-found {
+            background: #ef4444;
+        }
+
+        .verify-badge svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .verify-header h1 {
+            font-family: 'Playfair Display', serif;
+            color: white;
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        .verify-header p {
+            color: rgba(255,255,255,0.6);
+            font-size: 13px;
+        }
+
+        .card-display {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .card-row {
+            display: flex;
+            gap: 16px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .card-side {
+            flex: 1;
+            max-width: 280px;
+        }
+
+        .card-side img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .card-label {
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+        }
+
+        .emp-details {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .emp-details h3 {
+            color: #E8A820;
+            font-size: 14px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .detail-item label {
+            display: block;
+            color: rgba(255,255,255,0.4);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-item span {
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 24px;
+            color: rgba(255,255,255,0.3);
+            font-size: 11px;
+        }
+
+        .no-card {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .no-card i {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.3;
+        }
+
+        @media (max-width: 500px) {
+            .card-row {
+                flex-direction: column;
+                align-items: center;
+            }
+            .card-side {
+                max-width: 260px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="verify-container">
+        <div class="verify-header">
+            {% if has_card %}
+            <div class="verify-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M9 12l2 2 4-4"/>
+                    <circle cx="12" cy="12" r="10"/>
+                </svg>
+                Verified Employee
+            </div>
+            {% else %}
+            <div class="verify-badge not-found">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="15" y1="9" x2="9" y2="15"/>
+                    <line x1="9" y1="9" x2="15" y2="15"/>
+                </svg>
+                Card Not Found
+            </div>
+            {% endif %}
+            <h1>Employee ID Card</h1>
+            <p>{{ emp_id }}</p>
+        </div>
+
+        {% if has_card %}
+        <div class="card-display">
+            <div class="card-row">
+                {% if front_file %}
+                <div class="card-side">
+                    <img src="/preview/{{ front_file }}" alt="Front Side">
+                    <div class="card-label">Front Side</div>
+                </div>
+                {% endif %}
+                {% if back_file %}
+                <div class="card-side">
+                    <img src="/preview/{{ back_file }}" alt="Back Side">
+                    <div class="card-label">Back Side</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if emp %}
+        <div class="emp-details">
+            <h3>Employee Details</h3>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <label>Name</label>
+                    <span>{{ emp.get('name', 'N/A') }}</span>
+                </div>
+                <div class="detail-item">
+                    <label>Employee ID</label>
+                    <span>{{ emp.get('employee_id', 'N/A') }}</span>
+                </div>
+                <div class="detail-item">
+                    <label>Designation</label>
+                    <span>{{ emp.get('designation', 'N/A') }}</span>
+                </div>
+                <div class="detail-item">
+                    <label>Department</label>
+                    <span>{{ emp.get('department', 'N/A') }}</span>
+                </div>
+                <div class="detail-item">
+                    <label>Valid Until</label>
+                    <span>{{ emp.get('valid_till', 'N/A') }}</span>
+                </div>
+                <div class="detail-item">
+                    <label>Company</label>
+                    <span>{{ emp.get('company', 'N/A') }}</span>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="no-card">
+            <p>No ID card found for this employee ID.<br>The card may not have been generated yet.</p>
+        </div>
+        {% endif %}
+
+        <div class="footer-text">
+            This is an official employee verification page.<br>
+            Scanned via QR code on the employee's ID card.
+        </div>
+    </div>
+</body>
+</html>

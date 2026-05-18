@@ -1,0 +1,6 @@
+__pycache__/
+.env
+id-card-generator/backend/uploads/
+id-card-generator/backend/output/
+id-card-generator/frontend/static/generated/
+*.pyc

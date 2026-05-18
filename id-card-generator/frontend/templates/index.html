@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee ID Card Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>ID Card</h1>
+                        <span>Generator Pro</span>
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-section="upload">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Upload Data</span>
+                </a>
+                <a href="#" class="nav-item" data-section="add-employee">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Add Employee</span>
+                </a>
+                <a href="#" class="nav-item" data-section="photos">
+                    <i class="fas fa-images"></i>
+                    <span>Photos</span>
+                </a>
+                <a href="#" class="nav-item" data-section="generate">
+                    <i class="fas fa-magic"></i>
+                    <span>Generate</span>
+                </a>
+                <a href="#" class="nav-item" data-section="preview">
+                    <i class="fas fa-eye"></i>
+                    <span>Preview</span>
+                </a>
+                <a href="#" class="nav-item" data-section="download">
+                    <i class="fas fa-download"></i>
+                    <span>Download</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="stats-box">
+                    <div class="stat-item">
+                        <span class="stat-number" id="stat-employees">0</span>
+                        <span class="stat-label">Employees</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="stat-generated">0</span>
+                        <span class="stat-label">Generated</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div class="header-left">
+                    <h2 id="section-title">Upload Employee Data</h2>
+                    <p id="section-subtitle">Upload your Excel file with employee information</p>
+                </div>
+                <div class="header-right">
+                    <button class="btn btn-outline" id="btn-clear" onclick="clearOutput()">
+                        <i class="fas fa-trash-alt"></i> Clear All
+                    </button>
+                    <button class="btn btn-primary" id="btn-download-all" onclick="downloadZip()" disabled>
+                        <i class="fas fa-file-archive"></i> Download ZIP
+                    </button>
+                </div>
+            </header>
+
+            <!-- Sections -->
+            <div class="content-area">
+                <!-- Upload Section -->
+                <section class="section active" id="section-upload">
+                    <!-- MongoDB Status -->
+                    <div class="db-status-bar" id="db-status-bar">
+                        <div class="db-indicator" id="db-indicator">
+                            <i class="fas fa-database"></i>
+                            <span id="db-status-text">Checking MongoDB...</span>
+                        </div>
+                        <button class="btn btn-outline btn-sm" id="btn-load-db" onclick="loadFromDB()" style="display:none;">
+                            <i class="fas fa-cloud-download-alt"></i> Load from DB
+                        </button>
+                    </div>
+
+                    <div class="upload-zone" id="excel-dropzone">
+                        <div class="upload-icon">
+                            <i class="fas fa-file-excel"></i>
+                        </div>
+                        <h3>Drag & Drop Excel File</h3>
+                        <p>or click to browse (.xlsx format)</p>
+                        <input type="file" id="excel-input" accept=".xlsx,.xls" hidden>
+                        <button class="btn btn-gold" onclick="document.getElementById('excel-input').click()">
+                            <i class="fas fa-folder-open"></i> Choose File
+                        </button>
+                    </div>
+
+                    <div class="upload-status" id="excel-status" style="display:none;">
+                        <div class="status-icon success">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="status-info">
+                            <h4 id="excel-filename">employees.xlsx</h4>
+                            <p id="excel-count">20 employees loaded</p>
+                        </div>
+                    </div>
+
+                    <!-- Employee Table Preview -->
+                    <div class="table-container" id="employee-table-container" style="display:none;">
+                        <div class="table-header">
+                            <h3><i class="fas fa-users"></i> Employee Data Preview</h3>
+                            <div class="table-actions">
+                                <input type="text" class="search-input" id="search-employee" placeholder="Search employees..." oninput="filterEmployees()">
+                                <select class="filter-select" id="filter-dept" onchange="filterEmployees()">
+                                    <option value="">All Departments</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="table-scroll">
+                            <table class="data-table" id="employee-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Employee ID</th>
+                                        <th>Name</th>
+                                        <th>Designation</th>
+                                        <th>Department</th>
+                                        <th>Blood</th>
+                                        <th>Mobile</th>
+                                        <th>Photo</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="employee-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Add Employee Section -->
+                <section class="section" id="section-add-employee">
+                    <div class="add-emp-layout">
+                        <!-- Left: Form -->
+                        <div class="add-emp-form-panel">
+                            <div class="form-card">
+                                <div class="form-card-header">
+                                    <i class="fas fa-user-plus"></i>
+                                    <h3>Add New Employee</h3>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Employee Name <span class="required">*</span></label>
+                                        <input type="text" id="add-name" placeholder="e.g. Rahul Sharma">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Employee ID <span class="required">*</span></label>
+                                        <div style="display:flex;gap:6px;">
+                                            <input type="text" id="add-empid" placeholder="e.g. EMP-2026-0001" style="flex:1;">
+                                            <button class="btn btn-outline" type="button" onclick="loadEmployee()" title="Load existing employee">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Designation <span class="required">*</span></label>
+                                        <input type="text" id="add-designation" placeholder="e.g. Software Engineer">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Department</label>
+                                        <input type="text" id="add-department" placeholder="e.g. IT">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Valid Until</label>
+                                        <input type="text" id="add-valid" placeholder="e.g. Dec 2027" value="Dec 2027">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Blood Group</label>
+                                        <select id="add-blood">
+                                            <option value="O +ve">O +ve</option>
+                                            <option value="O -ve">O -ve</option>
+                                            <option value="A +ve">A +ve</option>
+                                            <option value="A -ve">A -ve</option>
+                                            <option value="B +ve">B +ve</option>
+                                            <option value="B -ve">B -ve</option>
+                                            <option value="AB +ve">AB +ve</option>
+                                            <option value="AB -ve">AB -ve</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Mobile Number</label>
+                                        <input type="text" id="add-mobile" placeholder="e.g. 9876543210">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" id="add-email" placeholder="e.g. name@company.com">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Company</label>
+                                        <input type="text" id="add-company" placeholder="e.g. Acme Corp International" value="Acme Corp International">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Website</label>
+                                        <input type="text" id="add-website" placeholder="e.g. www.acmecorp.com" value="www.acmecorp.com">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Address</label>
+                                        <input type="text" id="add-address" placeholder="e.g. Chennai">
+                                    </div>
+                                </div>
+                                <!-- Photo Upload -->
+                                <div class="form-photo-upload">
+                                    <label>Employee Photo</label>
+                                    <div class="photo-upload-box" id="add-photo-box" onclick="document.getElementById('add-photo-input').click()">
+                                        <img id="add-photo-preview" src="" style="display:none;">
+                                        <div class="photo-upload-placeholder" id="add-photo-placeholder">
+                                            <i class="fas fa-camera"></i>
+                                            <span>Click to upload photo</span>
+                                        </div>
+                                        <input type="file" id="add-photo-input" accept="image/*" hidden onchange="previewAddPhoto(this)">
+                                    </div>
+                                </div>
+                                <div style="display:flex;gap:10px;">
+                                    <button class="btn btn-gold btn-large" style="flex:1;" onclick="generateSingleCard()">
+                                        <i class="fas fa-id-card"></i> Generate ID Card
+                                    </button>
+                                    <button class="btn btn-outline btn-large" onclick="clearAddForm()">
+                                        <i class="fas fa-eraser"></i> Clear
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Right: Live Preview -->
+                        <div class="add-emp-preview-panel">
+                            <div class="preview-panel-header">
+                                <h3><i class="fas fa-eye"></i> ID Card Preview</h3>
+                            </div>
+                            <div class="single-card-preview" id="single-card-preview">
+                                <div class="empty-preview">
+                                    <i class="fas fa-id-card"></i>
+                                    <p>Fill the form and click<br>"Generate ID Card" to preview</p>
+                                </div>
+                            </div>
+                            <div class="single-card-actions" id="single-card-actions" style="display:none;">
+                                <a class="btn btn-outline" id="single-dl-front" href="" download>
+                                    <i class="fas fa-download"></i> Download Front
+                                </a>
+                                <a class="btn btn-outline" id="single-dl-back" href="" download>
+                                    <i class="fas fa-download"></i> Download Back
+                                </a>
+                                <button class="btn btn-gold" id="single-dl-both" onclick="downloadSingleBoth()">
+                                    <i class="fas fa-image"></i> Download Both (Single Image)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Photos Section -->
+                <section class="section" id="section-photos">
+                    <div class="upload-zone" id="photo-dropzone">
+                        <div class="upload-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h3>Upload Employee Photos</h3>
+                        <p>Drag & drop or browse (JPG, PNG)</p>
+                        <p class="upload-hint">Name photos as specified in Excel (emp1.jpg, emp2.jpg...)</p>
+                        <input type="file" id="photo-input" accept="image/*" multiple hidden>
+                        <button class="btn btn-gold" onclick="document.getElementById('photo-input').click()">
+                            <i class="fas fa-images"></i> Choose Photos
+                        </button>
+                    </div>
+
+                    <div class="photo-grid" id="photo-grid"></div>
+                </section>
+
+                <!-- Generate Section -->
+                <section class="section" id="section-generate">
+                    <div class="generate-panel">
+                        <div class="generate-header">
+                            <div class="generate-icon">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <h3>Generate ID Cards</h3>
+                            <p>Create high-quality 300 DPI ID cards for all employees</p>
+                        </div>
+
+                        <div class="generate-options">
+                            <div class="option-group">
+                                <label>Output Format</label>
+                                <select id="output-format">
+                                    <option value="png">PNG (300 DPI)</option>
+                                    <option value="jpg">JPG (300 DPI)</option>
+                                </select>
+                            </div>
+                            <div class="option-group">
+                                <label>Card Sides</label>
+                                <select id="card-sides">
+                                    <option value="both">Front & Back</option>
+                                    <option value="front">Front Only</option>
+                                    <option value="back">Back Only</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="progress-container" id="progress-container" style="display:none;">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-fill"></div>
+                            </div>
+                            <p class="progress-text" id="progress-text">Generating... 0/20</p>
+                        </div>
+
+                        <button class="btn btn-gold btn-large" id="btn-generate" onclick="generateCards()">
+                            <i class="fas fa-magic"></i> Generate All ID Cards
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Preview Section -->
+                <section class="section" id="section-preview">
+                    <div class="preview-grid" id="preview-grid">
+                        <div class="empty-state">
+                            <i class="fas fa-eye-slash"></i>
+                            <h3>No Cards Generated Yet</h3>
+                            <p>Generate ID cards first to preview them here</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Download Section -->
+                <section class="section" id="section-download">
+                    <div class="download-panel">
+                        <div class="download-header">
+                            <div class="download-icon">
+                                <i class="fas fa-file-archive"></i>
+                            </div>
+                            <h3>Download ID Cards</h3>
+                            <p>Download all generated cards as a ZIP archive</p>
+                        </div>
+
+                        <div class="download-stats" id="download-stats">
+                            <div class="dl-stat">
+                                <i class="fas fa-image"></i>
+                                <span id="dl-count">0 cards</span>
+                            </div>
+                            <div class="dl-stat">
+                                <i class="fas fa-hdd"></i>
+                                <span>300 DPI PNG</span>
+                            </div>
+                            <div class="dl-stat">
+                                <i class="fas fa-print"></i>
+                                <span>Print Ready</span>
+                            </div>
+                        </div>
+
+                        <div class="download-actions">
+                            <button class="btn btn-gold btn-large" onclick="downloadZip()">
+                                <i class="fas fa-download"></i> Download ZIP
+                            </button>
+                        </div>
+
+                        <div class="file-list" id="file-list"></div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay" style="display:none;">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p id="loading-text">Processing...</p>
+        </div>
+    </div>
+
+    <!-- Image Preview Modal — Front & Back -->
+    <div class="modal-overlay" id="image-modal" style="display:none;" onclick="closeModal(event)">
+        <div class="modal-content modal-dual">
+            <button class="modal-close" onclick="document.getElementById('image-modal').style.display='none'">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-title-bar">
+                <span id="modal-title"></span>
+                <span class="badge">300 DPI • Print Ready</span>
+            </div>
+            <div class="modal-images">
+                <div class="modal-card-wrap">
+                    <span class="modal-card-label">FRONT</span>
+                    <img id="modal-front" src="" alt="Front Side">
+                </div>
+                <div class="modal-card-wrap">
+                    <span class="modal-card-label">BACK</span>
+                    <img id="modal-back" src="" alt="Back Side">
+                </div>
+            </div>
+            <div class="modal-actions">
+                <a id="modal-dl-front" href="" download class="btn btn-outline">
+                    <i class="fas fa-download"></i> Download Front
+                </a>
+                <a id="modal-dl-back" href="" download class="btn btn-outline">
+                    <i class="fas fa-download"></i> Download Back
+                </a>
+                <button id="modal-dl-both" class="btn btn-gold" onclick="downloadBothCards()">
+                    <i class="fas fa-image"></i> Download Both (Single Image)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

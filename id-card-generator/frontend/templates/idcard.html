@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ID Card - {{ employee.name }}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #2a2a2a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            gap: 40px;
+            flex-wrap: wrap;
+            padding: 40px;
+        }
+
+        .card {
+            width: 1013px;
+            height: 1560px;
+            border-radius: 36px;
+            position: relative;
+            overflow: hidden;
+            font-family: 'DM Sans', sans-serif;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+
+        /* FRONT CARD */
+        .front {
+            background: #f8f6f0;
+        }
+
+        .front-top {
+            background: #E8A820;
+            height: 465px;
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            padding: 76px 76px 0;
+        }
+
+        .lanyard-hole {
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 118px;
+            height: 60px;
+            background: #2a2a2a;
+            border-radius: 0 0 60px 60px;
+        }
+
+        .org-logo {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .logo-circle {
+            width: 144px;
+            height: 144px;
+            border-radius: 50%;
+            border: 4px solid rgba(255,255,255,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            font-weight: 700;
+            color: #fff;
+            background: rgba(255,255,255,0.15);
+        }
+
+        .org-name-top {
+            font-family: 'Poppins', sans-serif;
+            font-size: 38px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.95);
+            line-height: 1.3;
+        }
+
+        .card-type-badge {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.9);
+            background: rgba(255,255,255,0.2);
+            padding: 10px 28px;
+            border-radius: 20px;
+            margin-top: 40px;
+        }
+
+        .front-body {
+            padding: 60px 76px 76px;
+            display: flex;
+            flex-direction: column;
+            gap: 48px;
+        }
+
+        .person-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .person-info { flex: 1; }
+
+        .person-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 68px;
+            font-weight: 700;
+            color: #1a1a1a;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+
+        .person-role {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 36px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #E8A820;
+        }
+
+        .person-dept {
+            font-size: 32px;
+            color: #888;
+            margin-top: 6px;
+        }
+
+        .photo-box {
+            width: 320px;
+            height: 380px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 6px solid #E8A820;
+            background: #ddd;
+            flex-shrink: 0;
+            margin-left: 40px;
+        }
+
+        .photo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .divider {
+            height: 3px;
+            background: linear-gradient(to right, #E8A820, rgba(232,168,32,0.1));
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 36px 48px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .detail-label {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #aaa;
+        }
+
+        .detail-value {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 34px;
+            font-weight: 500;
+            color: #222;
+        }
+
+        .bottom-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+
+        .qr-box {
+            width: 220px;
+            height: 220px;
+            background: #fff;
+            border-radius: 12px;
+            border: 2px solid #e8e0cc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+        }
+
+        .qr-box img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .id-barcode { text-align: right; }
+
+        .id-number {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: 2px;
+        }
+
+        .id-label {
+            font-size: 24px;
+            color: #aaa;
+            letter-spacing: 1px;
+        }
+
+        .website {
+            font-size: 28px;
+            color: #E8A820;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        /* BACK CARD */
+        .back {
+            background: #E8A820;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .back-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 100px 76px 80px;
+        }
+
+        .back-logo-row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 60px;
+        }
+
+        .back-logo-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 4px solid rgba(255,255,255,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 64px;
+            font-weight: 700;
+            color: #fff;
+            background: rgba(255,255,255,0.15);
+        }
+
+        .back-section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 30px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 30px;
+        }
+
+        .terms-text {
+            font-size: 28px;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.88);
+            margin-bottom: 20px;
+        }
+
+        .back-divider {
+            height: 2px;
+            background: rgba(255,255,255,0.25);
+            margin: 36px 0;
+        }
+
+        .back-footer {
+            margin-top: auto;
+            border-top: 2px solid rgba(255,255,255,0.25);
+            padding-top: 40px;
+        }
+
+        .back-footer-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+
+        .back-footer-text {
+            font-size: 26px;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.8;
+        }
+
+        .signature-line {
+            margin: 30px 0 12px;
+            height: 2px;
+            background: rgba(255,255,255,0.4);
+            width: 400px;
+        }
+
+        .signature-label {
+            font-size: 26px;
+            color: rgba(255,255,255,0.7);
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <!-- Front Card -->
+    <div class="card front" id="front-card">
+        <div class="lanyard-hole"></div>
+        <div class="front-top">
+            <div class="org-logo">
+                <div class="logo-circle">{{ initials }}</div>
+                <div class="org-name-top">{{ employee.company }}</div>
+            </div>
+            <div class="card-type-badge">Employee</div>
+        </div>
+        <div class="front-body">
+            <div class="person-row">
+                <div class="person-info">
+                    <div class="person-name">{{ employee.name }}</div>
+                    <div class="person-role">{{ employee.designation }}</div>
+                    <div class="person-dept">{{ employee.department }}</div>
+                </div>
+                <div class="photo-box">
+                    {% if employee.photo %}
+                    <img src="{{ photo_url }}" alt="Employee Photo">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="divider"></div>
+            <div class="details-grid">
+                <div class="detail-item">
+                    <span class="detail-label">Employee ID</span>
+                    <span class="detail-value">{{ employee.employee_id }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Valid Until</span>
+                    <span class="detail-value">{{ employee.valid_till }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Blood Group</span>
+                    <span class="detail-value">{{ employee.blood_group }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Contact</span>
+                    <span class="detail-value">+91 {{ employee.mobile }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Email</span>
+                    <span class="detail-value">{{ employee.email }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Location</span>
+                    <span class="detail-value">{{ employee.address }}</span>
+                </div>
+            </div>
+            <div class="bottom-row">
+                <div class="qr-box">
+                    <img src="{{ qr_url }}" alt="QR Code">
+                </div>
+                <div class="id-barcode">
+                    <div class="id-label">EMPLOYEE ID</div>
+                    <div class="id-number">{{ employee.employee_id }}</div>
+                </div>
+            </div>
+            <div class="website">{{ employee.website }}</div>
+        </div>
+    </div>
+
+    <!-- Back Card -->
+    <div class="card back">
+        <div class="back-content">
+            <div class="back-logo-row">
+                <div class="back-logo-circle">{{ initials }}</div>
+            </div>
+            <div class="back-section-title">Terms & Conditions</div>
+            <p class="terms-text">This card is the property of the issuing organization. If found, please return it to the address below. Unauthorized use of this card is strictly prohibited.</p>
+            <p class="terms-text">The cardholder must report loss or damage immediately. This card grants access only to authorized areas as per the holder's designation.</p>
+            <div class="back-divider"></div>
+            <p class="terms-text">This ID is valid for the period shown on the front. Management reserves the right to revoke access at any time without prior notice.</p>
+            <div class="signature-line"></div>
+            <div class="signature-label">{{ employee.name }}</div>
+            <div class="back-footer">
+                <div class="back-footer-title">{{ employee.company | upper }}</div>
+                <div class="back-footer-text">
+                    {{ employee.address }}<br>
+                    {{ employee.email }}<br>
+                    {{ employee.website }}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
