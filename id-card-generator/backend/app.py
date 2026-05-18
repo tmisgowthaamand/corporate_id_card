@@ -7,7 +7,6 @@ import math
 from datetime import datetime
 from flask import Flask, render_template, request, jsonify, send_file, send_from_directory
 from flask_cors import CORS
-from dotenv import load_dotenv
 import pandas as pd
 from PIL import Image, ImageDraw, ImageFont
 import qrcode
@@ -24,7 +23,6 @@ app = Flask(__name__,
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB max upload
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-load_dotenv(os.path.join(BASE_DIR, '.env'))
 CORS(app)
 
 # On Vercel, the filesystem is read-only except for /tmp
