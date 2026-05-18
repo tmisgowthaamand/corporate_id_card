@@ -1,3 +1,5 @@
+const API_BASE_URL = "https://corporate-id-backend.onrender.com";
+
 // ========== STATE ==========
 let employeeData = [];
 let generatedCards = [];
@@ -70,7 +72,7 @@ function uploadExcel(file) {
     const formData = new FormData();
     formData.append('file', file);
 
-    fetch('/upload-excel', { method: 'POST', body: formData })
+    fetch(API_BASE_URL + '/upload-excel', { method: 'POST', body: formData })
         .then(res => res.json())
         .then(data => {
             hideLoading();
@@ -187,7 +189,7 @@ function uploadPhotos(files) {
         formData.append('photos', file);
     });
 
-    fetch('/upload-photos', { method: 'POST', body: formData })
+    fetch(API_BASE_URL + '/upload-photos', { method: 'POST', body: formData })
         .then(res => res.json())
         .then(data => {
             hideLoading();
@@ -201,7 +203,7 @@ function uploadPhotos(files) {
                 const item = document.createElement('div');
                 item.className = 'photo-item';
                 item.innerHTML = `
-                    <img src="/preview/${filename}" alt="${filename}" onerror="this.style.display='none'">
+                    <img src="${API_BASE_URL}/preview/${filename}" alt="${filename}" onerror="this.style.display='none'">
                     <div class="photo-name">${filename}</div>
                 `;
                 grid.appendChild(item);
@@ -235,7 +237,7 @@ function generateCards() {
     progressFill.style.width = '10%';
     progressText.textContent = `Generating... 0/${total}`;
 
-    fetch('/generate', {
+    fetch(API_BASE_URL + '/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ employees: employeeData })
@@ -286,7 +288,7 @@ function generateCards() {
 function loadPreview() {
     const grid = document.getElementById('preview-grid');
 
-    fetch('/get-generated')
+    fetch(API_BASE_URL + '/get-generated')
         .then(res => res.json())
         .then(data => {
             if (data.files.length === 0) {
@@ -322,15 +324,15 @@ function loadPreview() {
                         <span class="badge">300 DPI</span>
                     </div>
                     <div class="preview-card-images" style="cursor:pointer;" onclick="openCardModal('${id}', '${frontFile}', '${backFile}')">
-                        ${files.front ? `<img src="/preview/${files.front}" alt="Front">` : ''}
-                        ${files.back ? `<img src="/preview/${files.back}" alt="Back">` : ''}
+                        ${files.front ? `<img src="${API_BASE_URL}/preview/${files.front}" alt="Front">` : ''}
+                        ${files.back ? `<img src="${API_BASE_URL}/preview/${files.back}" alt="Back">` : ''}
                     </div>
                     <div class="preview-card-actions">
                         <button class="btn btn-gold" onclick="downloadCombined('${frontFile}', '${backFile}')">
                             <i class="fas fa-image"></i> Download Both
                         </button>
-                        <a class="btn btn-outline" href="/download/${frontFile}" download><i class="fas fa-download"></i> Front</a>
-                        <a class="btn btn-outline" href="/download/${backFile}" download><i class="fas fa-download"></i> Back</a>
+                        <a class="btn btn-outline" href="${API_BASE_URL}/download/${frontFile}" download><i class="fas fa-download"></i> Front</a>
+                        <a class="btn btn-outline" href="${API_BASE_URL}/download/${backFile}" download><i class="fas fa-download"></i> Back</a>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -343,7 +345,7 @@ function downloadCombined(frontFile, backFile) {
         showToast('Both front and back are needed', 'error');
         return;
     }
-    fetch('/download-combined', {
+    fetch(API_BASE_URL + '/download-combined', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ front: frontFile, back: backFile })
@@ -366,7 +368,7 @@ function downloadCombined(frontFile, backFile) {
 
 // ========== DOWNLOAD ==========
 function loadFileList() {
-    fetch('/get-generated')
+    fetch(API_BASE_URL + '/get-generated')
         .then(res => res.json())
         .then(data => {
             const list = document.getElementById('file-list');
@@ -382,7 +384,7 @@ function loadFileList() {
                         <i class="fas fa-image"></i>
                         ${file}
                     </span>
-                    <a class="btn btn-outline" href="/download/${file}">
+                    <a class="btn btn-outline" href="${API_BASE_URL}/download/${file}">
                         <i class="fas fa-download"></i>
                     </a>
                 `;
@@ -394,7 +396,7 @@ function loadFileList() {
 function downloadZip() {
     showLoading('Creating ZIP archive...');
 
-    fetch('/download-zip', {
+    fetch(API_BASE_URL + '/download-zip', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ files: [] })
@@ -422,7 +424,7 @@ function downloadZip() {
 function clearOutput() {
     if (!confirm('Are you sure you want to clear all generated cards?')) return;
 
-    fetch('/clear-output', { method: 'POST' })
+    fetch(API_BASE_URL + '/clear-output', { method: 'POST' })
         .then(res => res.json())
         .then(data => {
             if (data.success) {
@@ -489,7 +491,7 @@ function closeModal(event) {
 function downloadBothCards() {
     if (!currentModalFiles.front || !currentModalFiles.back) return;
 
-    fetch('/download-combined', {
+    fetch(API_BASE_URL + '/download-combined', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ front: currentModalFiles.front, back: currentModalFiles.back })
@@ -523,7 +525,7 @@ function loadEmployee() {
         return;
     }
 
-    fetch(`/api/employee/${empId}`)
+    fetch(`${API_BASE_URL}/api/employee/${empId}`)
         .then(res => {
             if (!res.ok) throw new Error('Not found');
             return res.json();
@@ -558,8 +560,8 @@ function loadEmployee() {
 
             const preview = document.getElementById('single-card-preview');
             preview.innerHTML = `
-                <img src="/preview/${frontFile}?t=${Date.now()}" alt="Front" onerror="this.style.display='none'">
-                <img src="/preview/${backFile}?t=${Date.now()}" alt="Back" onerror="this.style.display='none'">
+                <img src="${API_BASE_URL}/preview/${frontFile}?t=${Date.now()}" alt="Front" onerror="this.style.display='none'">
+                <img src="${API_BASE_URL}/preview/${backFile}?t=${Date.now()}" alt="Back" onerror="this.style.display='none'">
             `;
             const actions = document.getElementById('single-card-actions');
             actions.style.display = 'flex';
@@ -644,7 +646,7 @@ function generateSingleCard() {
 
     showLoading('Generating ID Card...');
 
-    fetch('/generate-single', {
+    fetch(API_BASE_URL + '/generate-single', {
         method: 'POST',
         body: formData
     })
@@ -662,8 +664,8 @@ function generateSingleCard() {
             // Show preview
             const preview = document.getElementById('single-card-preview');
             preview.innerHTML = `
-                <img src="/preview/${data.front}?t=${Date.now()}" alt="Front">
-                <img src="/preview/${data.back}?t=${Date.now()}" alt="Back">
+                <img src="${API_BASE_URL}/preview/${data.front}?t=${Date.now()}" alt="Front">
+                <img src="${API_BASE_URL}/preview/${data.back}?t=${Date.now()}" alt="Back">
             `;
 
             // Show actions
@@ -680,7 +682,7 @@ function generateSingleCard() {
 
 function downloadSingleBoth() {
     if (!singleCardFiles.front) return;
-    fetch('/download-combined', {
+    fetch(API_BASE_URL + '/download-combined', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ front: singleCardFiles.front, back: singleCardFiles.back })
@@ -700,7 +702,7 @@ function downloadSingleBoth() {
 
 // ========== MONGODB ==========
 function checkDBStatus() {
-    fetch('/db-status')
+    fetch(API_BASE_URL + '/db-status')
         .then(res => res.json())
         .then(data => {
             const indicator = document.getElementById('db-indicator');
@@ -730,7 +732,7 @@ function checkDBStatus() {
 function loadFromDB() {
     showLoading('Loading employees from MongoDB...');
 
-    fetch('/api/load-from-db')
+    fetch(API_BASE_URL + '/api/load-from-db')
         .then(res => res.json())
         .then(data => {
             hideLoading();
