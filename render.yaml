@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: corporate-id-backend
+    env: python
+    buildCommand: pip install -r id-card-generator/backend/requirements.txt
+    startCommand: cd id-card-generator/backend && gunicorn app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: MONGO_DB
+        value: id_card_generator
+      - key: FRONTEND_URL
+        value: https://corporate-id-card.vercel.app
+      - key: MONGO_URI
+        sync: false
