@@ -703,7 +703,8 @@ def generate_front_card(emp):
                            width=max(1, int(1 * S)))
 
     emp_id = emp.get('employee_id', 'EMP-0000')
-    qr_img = generate_qr_code(emp_id, qr_container_size - qr_pad*2)
+    qr_url = f"https://corporate-id-card.onrender.com/card/{emp_id}"
+    qr_img = generate_qr_code(qr_url, qr_container_size - qr_pad*2)
     img.paste(qr_img, (body_pad_x + qr_pad, bottom_y + qr_pad))
     draw = ImageDraw.Draw(img)
 
