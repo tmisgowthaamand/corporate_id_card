@@ -1,6 +1,18 @@
 __pycache__/
+*.pyc
+
+# Environment files
 .env
+.env.local
+.env.production
+.env.development
+*.env
+!.env.example
+
+# Upload and output directories
 id-card-generator/backend/uploads/
 id-card-generator/backend/output/
 id-card-generator/frontend/static/generated/
-*.pyc
+
+# Keep .gitkeep files
+!**/.gitkeep

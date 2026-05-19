@@ -1,4 +1,5 @@
-const API_BASE_URL = "https://corporate-id-backend.onrender.com";
+// Use environment variable or fallback to production URL
+const API_BASE_URL = window.ENV?.API_BASE_URL || "https://corporate-id-card.onrender.com";
 
 // ========== STATE ==========
 let employeeData = [];
