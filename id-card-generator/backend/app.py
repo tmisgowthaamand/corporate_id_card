@@ -23,7 +23,7 @@ app = Flask(__name__,
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB max upload
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # On Vercel, the filesystem is read-only except for /tmp
 if os.environ.get('VERCEL'):
@@ -286,36 +286,6 @@ def get_employee(emp_id):
     if emp:
         return jsonify(mongo_serialize(emp))
     return jsonify({'error': 'Employee not found'}), 404
-
-
-@app.route('/db-status')
-def get_db_status():
-    if db is not None:
-        try:
-            client.admin.command('ping')
-            emp_count = db['employees'].count_documents({})
-            gen_count = db['generated_cards'].count_documents({})
-            return jsonify({
-                'connected': True,
-                'employees': emp_count,
-                'generated_cards': gen_count
-            })
-        except Exception as e:
-            return jsonify({'connected': False, 'message': str(e)})
-    return jsonify({'connected': False, 'message': 'Database not connected'})
-
-
-@app.route('/api/load-from-db')
-def load_from_db():
-    if db is None:
-        return jsonify({'error': 'Database not connected'}), 503
-    
-    try:
-        employees = list(db['employees'].find({}))
-        employees = [mongo_serialize(emp) for emp in employees]
-        return jsonify({'success': True, 'employees': employees, 'count': len(employees)})
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
 
 
 @app.route('/download/<filename>')
