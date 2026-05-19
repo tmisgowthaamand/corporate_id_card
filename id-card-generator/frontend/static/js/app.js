@@ -475,10 +475,10 @@ let currentModalFiles = { front: '', back: '' };
 function openCardModal(id, frontFile, backFile) {
     const modal = document.getElementById('image-modal');
     document.getElementById('modal-title').textContent = id;
-    document.getElementById('modal-front').src = '/preview/' + frontFile;
-    document.getElementById('modal-back').src = '/preview/' + backFile;
-    document.getElementById('modal-dl-front').href = '/download/' + frontFile;
-    document.getElementById('modal-dl-back').href = '/download/' + backFile;
+    document.getElementById('modal-front').src = API_BASE_URL + '/preview/' + frontFile;
+    document.getElementById('modal-back').src = API_BASE_URL + '/preview/' + backFile;
+    document.getElementById('modal-dl-front').href = API_BASE_URL + '/download/' + frontFile;
+    document.getElementById('modal-dl-back').href = API_BASE_URL + '/download/' + backFile;
     currentModalFiles = { front: frontFile, back: backFile };
     modal.style.display = 'flex';
 }
