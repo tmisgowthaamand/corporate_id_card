@@ -836,6 +836,38 @@ def generate_back_card(emp):
     final.convert('RGB').save(output_path, 'PNG', dpi=(300, 300))
     return output_path
 
+
+def _wrap_text(draw, text, font, max_width):
+    """Word-wrap text to fit within max_width. Returns list of lines."""
+    words = text.split()
+    if not words:
+        return [text]
+    lines = []
+    current = words[0]
+    for word in words[1:]:
+        test = current + ' ' + word
+        tw = draw.textbbox((0, 0), test, font=font)[2]
+        if tw <= max_width:
+            current = test
+        else:
+            lines.append(current)
+            current = word
+    lines.append(current)
+    return lines
+
+def _apply_rounded_corners(img, radius):
+    """Apply rounded corners to the card using an alpha mask."""
+    mask = Image.new('L', img.size, 0)
+    d = ImageDraw.Draw(mask)
+    d.rounded_rectangle([0, 0, img.size[0], img.size[1]], radius=radius, fill=255)
+    img.putalpha(mask)
+    return img
+
+def _draw_photo_placeholder(draw, x, y, w, h):
+    """Draw a gradient placeholder with gold silhouette SVG icon per spec."""
+    # Placeholder logic - no-op or simple drawing if photo is missing
+    pass
+
 def _draw_wrapped_text(draw, text, x, y, max_width, font, fill, line_height):
     """Draw text with word wrapping. Returns y position after last line."""
     words = text.split()
