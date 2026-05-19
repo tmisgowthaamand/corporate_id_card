@@ -23,7 +23,8 @@ app = Flask(__name__,
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB max upload
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-CORS(app, resources={r"/*": {"origins": "*"}})
+FRONTEND_URL = os.environ.get('FRONTEND_URL', 'https://corporate-id-card.vercel.app')
+CORS(app, resources={r"/*": {"origins": FRONTEND_URL}})
 
 # On Vercel, the filesystem is read-only except for /tmp
 if os.environ.get('VERCEL'):
