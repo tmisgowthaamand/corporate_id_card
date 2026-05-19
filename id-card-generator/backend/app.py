@@ -381,26 +381,38 @@ def generate_qr_code(data, size=200):
 
 def get_font(name, size):
     font_map = {
-        'playfair': 'PlayfairDisplay',
-        'playfair-bold': 'PlayfairDisplay-Bold',
-        'dmsans': 'DMSans',
-        'dmsans-medium': 'DMSans-Medium',
-        'dmsans-semibold': 'DMSans-SemiBold',
-        'dmsans-bold': 'DMSans-Bold',
-        'montserrat': 'Montserrat',
-        'poppins': 'Poppins',
+        'playfair': 'PlayfairDisplay-Regular.ttf',
+        'playfair-bold': 'PlayfairDisplay-Bold.ttf',
+        'dmsans': 'DMSans-Regular.ttf',
+        'dmsans-medium': 'DMSans-Medium.ttf',
+        'dmsans-semibold': 'DMSans-SemiBold.ttf',
+        'dmsans-bold': 'DMSans-Bold.ttf',
+    }
+    
+    fallback_map = {
+        'playfair': 'georgia.ttf',
+        'playfair-bold': 'georgiab.ttf',
+        'dmsans': 'segoeui.ttf',
+        'dmsans-medium': 'segoeui.ttf',
+        'dmsans-semibold': 'segoeuib.ttf',
+        'dmsans-bold': 'segoeuib.ttf',
     }
     try:
         font_dir = os.path.join(FRONTEND_DIR, 'static', 'fonts')
-        font_file = os.path.join(font_dir, f'{font_map.get(name, "DMSans")}-Regular.ttf')
+        font_file = os.path.join(font_dir, font_map.get(name, 'DMSans-Regular.ttf'))
         if os.path.exists(font_file):
             return ImageFont.truetype(font_file, size)
     except:
         pass
+        
     try:
-        return ImageFont.truetype("arial.ttf", size)
+        # Fallback to system fonts (which support sizes correctly)
+        return ImageFont.truetype(fallback_map.get(name, 'arial.ttf'), size)
     except:
-        return ImageFont.load_default()
+        try:
+            return ImageFont.truetype("arial.ttf", size)
+        except:
+            return ImageFont.load_default()
 
 
 def text_center_x(draw, text, font, card_w):
