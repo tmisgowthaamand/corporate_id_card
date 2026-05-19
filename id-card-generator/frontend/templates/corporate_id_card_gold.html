@@ -269,27 +269,28 @@
     padding-top: 4px;
   }
 
-  /* QR box: 64×64, white bg, gold border, rounded 6px */
+  /* QR box: 64×64, white bg, gold border, rounded 12px like reference */
   .qr-box {
     width: 64px;
     height: 64px;
     background: #ffffff;
-    border-radius: 6px;
-    border: 1px solid var(--gold-primary);
+    border-radius: 12px;
+    border: 2px solid var(--gold-primary);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4px;
+    padding: 6px;
   }
 
   .qr-box #qr-container {
-    width: 56px;
-    height: 56px;
+    width: 52px;
+    height: 52px;
   }
 
   .qr-box #qr-container img {
     width: 100%;
     height: 100%;
+    border-radius: 4px;
   }
 
   .id-barcode {
@@ -774,8 +775,8 @@ function generateQR(text) {
   
   qrcode = new QRCode(container, {
     text: text,
-    width: 56,
-    height: 56,
+    width: 52,
+    height: 52,
     colorDark: '#1a1a1a',
     colorLight: '#ffffff',
     correctLevel: QRCode.CorrectLevel.M
