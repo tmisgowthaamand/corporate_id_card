@@ -1,19 +1,8 @@
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500;700&family=Dancing+Script:wght@600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  :root {
-    --gold-primary: #E6A817;
-    --gold-dark: #C8920E;
-    --gold-light: rgba(230, 168, 23, 0.15);
-    --card-bg: #FFFFFF;
-    --card-text: #1a1a1a;
-    --card-muted: #888888;
-    --card-label: #aaaaaa;
-    --scene-bg: #1e1e1e;
-  }
 
   .scene {
     display: flex;
@@ -21,7 +10,7 @@
     align-items: flex-start;
     gap: 48px;
     padding: 40px 20px;
-    background: var(--scene-bg);
+    background: #2a2a2a;
     border-radius: 16px;
     flex-wrap: wrap;
   }
@@ -42,158 +31,143 @@
     color: #999;
   }
 
-  /* CR80 Standard: 54mm × 85.6mm portrait = 204px × 323px at screen scale */
   .card {
-    width: 204px;
-    height: 323px;
-    border-radius: 20px;
+    width: 240px;
+    height: 370px;
+    border-radius: 18px;
     position: relative;
     overflow: hidden;
     font-family: 'DM Sans', sans-serif;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.55), 0 8px 20px rgba(0,0,0,0.3);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 10px 20px rgba(0,0,0,0.3);
   }
 
   /* ── FRONT CARD ── */
   .front {
-    background: var(--card-bg);
+    background: #f8f6f0;
   }
 
-  /* Header: max 30% of card height = ~97px */
   .front-top {
-    background: var(--gold-primary);
-    height: 97px;
+    background: #E8A820;
+    height: 110px;
     position: relative;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    padding: 16px 14px 0;
+    padding: 18px 18px 0;
   }
 
   .lanyard-hole {
     position: absolute;
-    top: 0;
+    top: -1px;
     left: 50%;
     transform: translateX(-50%);
-    width: 26px;
-    height: 13px;
+    width: 28px;
+    height: 14px;
     background: #2a2a2a;
-    border-radius: 0 0 13px 13px;
+    border-radius: 0 0 14px 14px;
     z-index: 10;
   }
 
   .org-logo {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
   }
 
-  /* Logo circle: 32×32, font-size 13px */
   .logo-circle {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     border: 2px solid rgba(255,255,255,0.9);
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: 'Playfair Display', serif;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
     color: #fff;
     background: rgba(255,255,255,0.15);
   }
 
-  /* Org name: 9px, 600 weight, max-width 110px */
   .org-name-top {
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 600;
     color: rgba(255,255,255,0.9);
     letter-spacing: 0.5px;
     line-height: 1.3;
-    max-width: 110px;
+    max-width: 120px;
   }
 
-  /* Card type badge: 8px, letter-spacing 1.5px */
   .card-type-badge {
-    font-size: 8px;
+    font-size: 9px;
     font-weight: 600;
     letter-spacing: 1.5px;
     text-transform: uppercase;
     color: rgba(255,255,255,0.85);
     background: rgba(255,255,255,0.2);
-    padding: 2px 7px;
-    border-radius: 8px;
+    padding: 3px 8px;
+    border-radius: 10px;
     align-self: flex-start;
-    margin-top: 2px;
+    margin-top: 4px;
   }
 
-  /* Wave separator: deeper S-curve, 32px viewBox */
+  /* Wave separator */
   .front-wave {
     position: absolute;
     bottom: -1px;
     left: 0;
     width: 100%;
-    height: 32px;
   }
 
   .front-body {
-    padding: 16px 14px 14px;
+    padding: 14px 18px 18px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    height: calc(100% - 97px);
+    gap: 12px;
   }
 
   .person-row {
     display: flex;
-    align-items: flex-start;
+    align-items: flex-end;
     justify-content: space-between;
-    gap: 6px;
   }
 
   .person-info {
     flex: 1;
-    min-width: 0;
   }
 
-  /* Name: Playfair 14px, 700 */
   .person-name {
     font-family: 'Playfair Display', serif;
-    font-size: 14px;
+    font-size: 17px;
     font-weight: 700;
-    color: var(--card-text);
+    color: #1a1a1a;
     line-height: 1.2;
-    margin-bottom: 2px;
+    margin-bottom: 3px;
   }
 
-  /* Role: DM Sans 9px, 600, letter-spacing 1px */
   .person-role {
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 600;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: var(--gold-primary);
-    line-height: 1.3;
+    color: #E8A820;
   }
 
-  /* Department: DM Sans 9px, 400 */
   .person-dept {
-    font-size: 9px;
-    font-weight: 400;
-    color: var(--card-muted);
+    font-size: 10px;
+    color: #888;
     margin-top: 1px;
   }
 
-  /* Photo box: 80×95, border-radius 12px, 3px gold border, glow */
   .photo-box {
-    width: 80px;
-    height: 95px;
-    border-radius: 12px;
+    width: 76px;
+    height: 90px;
+    border-radius: 10px;
     overflow: hidden;
-    border: 3px solid var(--gold-primary);
-    background: linear-gradient(135deg, #fdf6e3, #f0e0b0);
+    border: 2.5px solid #E8A820;
+    background: #ddd;
     flex-shrink: 0;
-    box-shadow: 0 0 0 3px var(--gold-primary), 0 0 12px rgba(230, 168, 23, 0.25);
+    margin-left: 12px;
   }
 
   .photo-box img {
@@ -209,136 +183,107 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background: linear-gradient(135deg, #e0d5c0, #c8bda0);
     gap: 4px;
   }
 
   .photo-placeholder svg {
-    opacity: 0.6;
+    opacity: 0.5;
   }
 
-  .photo-placeholder-text {
-    font-size: 7px;
-    color: rgba(230, 168, 23, 0.6);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-  }
-
-  /* Gold gradient divider */
   .divider {
     height: 1px;
-    background: linear-gradient(to right, var(--gold-primary), rgba(230,168,23,0.1));
-    margin: 5px 0 4px;
+    background: linear-gradient(to right, #E8A820, rgba(232,168,32,0.1));
   }
 
-  /* Details grid: tighter spacing */
   .details-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: 12px;
-    row-gap: 18px;
+    gap: 8px 12px;
   }
 
   .detail-item {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 1px;
   }
 
-  /* Label: 7px, 600 weight */
   .detail-label {
-    font-size: 6.5px;
+    font-size: 8px;
     font-weight: 600;
-    letter-spacing: 1.5px;
+    letter-spacing: 1px;
     text-transform: uppercase;
-    color: var(--card-label);
+    color: #aaa;
   }
 
-  /* Value: 11px, 500 weight */
   .detail-value {
-    font-size: 9.5px;
+    font-size: 10px;
     font-weight: 500;
-    color: #222222;
+    color: #222;
   }
 
-  /* Bottom section */
   .bottom-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: auto;
-    padding-top: 4px;
   }
 
-  /* QR box: 64×64, white bg, gold border, rounded 12px like reference */
   .qr-box {
-    width: 64px;
-    height: 64px;
-    background: #ffffff;
-    border-radius: 12px;
-    border: 2px solid var(--gold-primary);
+    width: 56px;
+    height: 56px;
+    background: #fff;
+    border-radius: 6px;
+    border: 1px solid #e8e0cc;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 6px;
+    padding: 4px;
   }
 
-  .qr-box #qr-container {
-    width: 52px;
-    height: 52px;
-  }
-
-  .qr-box #qr-container img {
+  .qr-box canvas {
     width: 100%;
     height: 100%;
-    border-radius: 4px;
   }
 
   .id-barcode {
     text-align: right;
   }
 
-  /* ID label: 7px */
-  .id-label {
-    font-size: 6.5px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    color: var(--card-label);
-    text-transform: uppercase;
-  }
-
-  /* ID number: 11px, 700, monospace */
   .id-number {
-    font-size: 9.5px;
+    font-size: 11px;
     font-weight: 700;
-    color: var(--card-text);
-    letter-spacing: 0.5px;
+    color: #1a1a1a;
+    letter-spacing: 1px;
     font-family: 'DM Mono', monospace;
-    margin-top: 2px;
   }
 
-  /* Website: 8px, 600 */
+  .id-label {
+    font-size: 8px;
+    color: #aaa;
+    letter-spacing: 0.5px;
+  }
+
   .website {
-    font-size: 7px;
-    color: var(--gold-primary);
+    font-size: 8px;
+    color: #E8A820;
     font-weight: 600;
     letter-spacing: 0.5px;
     text-align: center;
-    margin-top: 6px;
+    margin-top: 4px;
   }
 
   /* ── BACK CARD ── */
   .back {
-    background: var(--gold-primary);
+    background: #E8A820;
     display: flex;
     flex-direction: column;
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
   }
 
-  /* Pattern: opacity 0.18 */
   .back-pattern {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    opacity: 0.18;
+    opacity: 0.12;
     pointer-events: none;
   }
 
@@ -348,39 +293,37 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: 20px 14px 16px;
+    padding: 24px 18px 20px;
   }
 
   .back-logo-row {
     display: flex;
     justify-content: center;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
   }
 
-  /* Logo: 42×42, 2px white border */
   .back-logo-circle {
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: 2px solid rgba(255,255,255,0.6);
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: 'Playfair Display', serif;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
     color: #fff;
     background: rgba(255,255,255,0.15);
   }
 
-  /* Section heading: 8px, 700, letter-spacing 2px */
   .back-section-title {
-    font-size: 8px;
+    font-size: 9px;
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
     color: rgba(255,255,255,0.7);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
 
   .back-divider {
@@ -389,70 +332,59 @@
     margin: 10px 0;
   }
 
-  /* Body text: 8.5px, line-height 1.65 */
   .terms-text {
-    font-size: 8.5px;
-    line-height: 1.65;
-    color: rgba(255,255,255,0.88);
-    margin-bottom: 8px;
-  }
-
-  /* Signature block */
-  .signature-line {
-    margin: 10px 0 4px;
-    height: 1px;
-    background: rgba(255,255,255,0.45);
-    width: 90px;
-  }
-
-  /* Signature name: Dancing Script, 9px, italic */
-  .signature-label {
     font-size: 9px;
+    line-height: 1.6;
     color: rgba(255,255,255,0.85);
-    font-style: italic;
-    font-family: 'Dancing Script', cursive;
+    margin-bottom: 6px;
   }
 
-  /* Footer */
   .back-footer {
     margin-top: auto;
     border-top: 1px solid rgba(255,255,255,0.25);
-    padding-top: 10px;
+    padding-top: 12px;
   }
 
-  /* Org name: 9px, 700 */
   .back-footer-title {
     font-size: 9px;
     font-weight: 700;
     color: #fff;
-    letter-spacing: 0.5px;
     margin-bottom: 4px;
   }
 
-  /* Address: 8px, line-height 1.65 */
   .back-footer-text {
     font-size: 8px;
-    color: rgba(255,255,255,0.82);
-    line-height: 1.65;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.6;
+  }
+
+  .signature-line {
+    margin: 8px 0 4px;
+    height: 1px;
+    background: rgba(255,255,255,0.4);
+    width: 100px;
+  }
+
+  .signature-label {
+    font-size: 8px;
+    color: rgba(255,255,255,0.7);
+    font-style: italic;
   }
 
   /* ── CONTROLS ── */
   .controls {
-    background: #f5f5f5;
+    background: var(--color-background-secondary);
     border-radius: 12px;
-    border: 1px solid #ddd;
+    border: 0.5px solid var(--color-border-tertiary);
     padding: 16px 20px;
     margin-top: 20px;
     font-family: 'DM Sans', sans-serif;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
   }
 
   .controls-title {
     font-size: 12px;
     font-weight: 500;
-    color: #666;
+    color: var(--color-text-secondary);
     letter-spacing: 1px;
     text-transform: uppercase;
     margin-bottom: 12px;
@@ -461,88 +393,46 @@
   .field-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 8px;
+    margin-bottom: 8px;
   }
 
   .field-group {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 3px;
   }
 
   .field-group label {
     font-size: 10px;
-    color: #666;
+    color: var(--color-text-secondary);
     font-weight: 500;
   }
 
   .field-group input {
     font-size: 12px;
-    padding: 6px 10px;
-    height: 32px;
+    padding: 5px 8px;
+    height: 30px;
     border-radius: 6px;
-    border: 1px solid #ddd;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .field-group input:focus {
-    outline: none;
-    border-color: var(--gold-primary);
   }
 
   .update-btn {
     margin-top: 10px;
     width: 100%;
-    padding: 10px;
-    height: 36px;
+    padding: 8px;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 500;
     border-radius: 8px;
     cursor: pointer;
-    background: var(--gold-primary);
+    background: #E8A820;
     color: #fff;
     border: none;
     font-family: 'DM Sans', sans-serif;
     letter-spacing: 0.5px;
-    transition: background 0.2s;
   }
 
-  .update-btn:hover { 
-    background: var(--gold-dark);
-  }
-  
-  .update-btn:active { 
-    transform: scale(0.98);
-  }
-
-  /* ── PRINT CSS ── */
-  @media print {
-    body { 
-      margin: 0; 
-    }
-    
-    .scene {
-      background: white !important;
-      box-shadow: none !important;
-      padding: 0;
-    }
-    
-    .card {
-      box-shadow: none !important;
-      border: 1px solid #ddd;
-      break-inside: avoid;
-    }
-    
-    .controls {
-      display: none !important;
-    }
-    
-    * {
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-    }
-  }
+  .update-btn:hover { background: #d49a18; }
+  .update-btn:active { transform: scale(0.98); }
 </style>
 
 <h2 class="sr-only">Corporate ID card demo — front and back, gold and white design</h2>
@@ -558,8 +448,8 @@
           <div class="org-name-top" id="org-display">Acme Corp<br>International</div>
         </div>
         <div class="card-type-badge" id="card-type-display">Employee</div>
-        <svg class="front-wave" viewBox="0 0 240 32" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 28 L0 8 Q60 -8 120 12 Q180 32 240 8 L240 28 Z" fill="#FFFFFF"/>
+        <svg class="front-wave" viewBox="0 0 240 28" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 28 L0 14 Q60 0 120 14 Q180 28 240 14 L240 28 Z" fill="#f8f6f0"/>
         </svg>
       </div>
       <div class="front-body">
@@ -571,10 +461,10 @@
           </div>
           <div class="photo-box">
             <div class="photo-placeholder">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E6A817" stroke-width="1.5">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8a7a5a" stroke-width="1.5">
                 <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
               </svg>
-              <span class="photo-placeholder-text">PHOTO</span>
+              <span style="font-size:7px;color:#8a7a5a;font-family:'DM Sans',sans-serif;">PHOTO</span>
             </div>
           </div>
         </div>
@@ -599,7 +489,7 @@
         </div>
         <div class="bottom-row">
           <div class="qr-box">
-            <div id="qr-container"></div>
+            <canvas id="qr-canvas" width="48" height="48"></canvas>
           </div>
           <div class="id-barcode">
             <div class="id-label">EMPLOYEE ID</div>
@@ -614,10 +504,10 @@
   <div class="card-wrap">
     <span class="card-label">Back</span>
     <div class="card back">
-      <svg class="back-pattern" viewBox="0 0 204 323" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="160" cy="60" r="80" fill="none" stroke="#fff" stroke-width="16"/>
-        <circle cx="50" cy="240" r="65" fill="none" stroke="#fff" stroke-width="12"/>
-        <circle cx="120" cy="200" r="95" fill="none" stroke="#fff" stroke-width="8" opacity="0.7"/>
+      <svg class="back-pattern" viewBox="0 0 240 370" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="180" cy="80" r="100" fill="none" stroke="#fff" stroke-width="40"/>
+        <circle cx="60" cy="300" r="80" fill="none" stroke="#fff" stroke-width="30"/>
+        <path d="M40 180 Q120 120 200 180 Q280 240 200 300" fill="none" stroke="#fff" stroke-width="20"/>
       </svg>
       <div class="back-content">
         <div class="back-logo-row">
@@ -651,8 +541,8 @@
       <input type="text" id="inp-name" value="Alcide Piccio" placeholder="Employee Name">
     </div>
     <div class="field-group">
-      <label>Designation / Role</label>
-      <input type="text" id="inp-role" value="Senior Designer" placeholder="Designation">
+      <label>Role / Designation</label>
+      <input type="text" id="inp-role" value="Senior Designer" placeholder="Role">
     </div>
   </div>
   <div class="field-row">
@@ -662,56 +552,17 @@
     </div>
     <div class="field-group">
       <label>Employee ID</label>
-      <input type="text" id="inp-id" value="EMP-2024-0391" placeholder="EMP-0000">
+      <input type="text" id="inp-id" value="EMP-2024-0391" placeholder="ID Number">
     </div>
   </div>
   <div class="field-row">
     <div class="field-group">
-      <label>Blood Group</label>
-      <input type="text" id="inp-blood" value="O +ve" placeholder="O +ve">
+      <label>Organisation</label>
+      <input type="text" id="inp-org" value="Acme Corp International" placeholder="Company Name">
     </div>
-    <div class="field-group">
-      <label>Contact Number</label>
-      <input type="text" id="inp-contact" value="+91 98765 43210" placeholder="+91 XXXXX XXXXX">
-    </div>
-  </div>
-  <div class="field-row">
-    <div class="field-group">
-      <label>Valid Until</label>
-      <input type="text" id="inp-valid" value="Dec 2027" placeholder="Dec 2027">
-    </div>
-    <div class="field-group">
-      <label>Organisation Name</label>
-      <input type="text" id="inp-org" value="Acme Corp International" placeholder="Organisation">
-    </div>
-  </div>
-  <div class="field-row">
     <div class="field-group">
       <label>Card Type</label>
-      <input type="text" id="inp-type" value="Employee" placeholder="Employee / Student / Visitor">
-    </div>
-    <div class="field-group">
-      <label>Website</label>
-      <input type="text" id="inp-web" value="www.acmecorp.com" placeholder="www.example.com">
-    </div>
-  </div>
-  <div class="field-row">
-    <div class="field-group">
-      <label>Address Line 1</label>
-      <input type="text" id="inp-addr1" value="42 Business Park, Sector 5" placeholder="Street, Area">
-    </div>
-    <div class="field-group">
-      <label>City & PIN</label>
-      <input type="text" id="inp-city" value="Bengaluru — 560 001" placeholder="City — PIN">
-    </div>
-  </div>
-  <div class="field-row">
-    <div class="field-group">
-      <label>Email</label>
-      <input type="text" id="inp-email" value="hr@acmecorp.com" placeholder="contact@org.com">
-    </div>
-    <div class="field-group">
-      <!-- Empty for grid alignment -->
+      <input type="text" id="inp-type" value="Employee" placeholder="Student / Staff / Visitor">
     </div>
   </div>
   <button class="update-btn" onclick="updateCard()">Update Card</button>
@@ -719,70 +570,69 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
-let qrcode = null;
-
 function updateCard() {
   const name = document.getElementById('inp-name').value || 'Employee Name';
   const role = document.getElementById('inp-role').value || 'Designation';
   const dept = document.getElementById('inp-dept').value || 'Department';
   const empid = document.getElementById('inp-id').value || 'EMP-0000';
-  const blood = document.getElementById('inp-blood').value || 'O +ve';
-  const contact = document.getElementById('inp-contact').value || '+91 XXXXX XXXXX';
-  const valid = document.getElementById('inp-valid').value || 'Dec 2027';
   const org = document.getElementById('inp-org').value || 'Organisation';
   const type = document.getElementById('inp-type').value || 'Employee';
-  const web = document.getElementById('inp-web').value || 'www.example.com';
-  const addr1 = document.getElementById('inp-addr1').value || 'Street, Area';
-  const city = document.getElementById('inp-city').value || 'City — PIN';
-  const email = document.getElementById('inp-email').value || 'contact@org.com';
 
-  // Update front card
   document.getElementById('name-display').textContent = name;
+  document.getElementById('sig-display').textContent = name;
   document.getElementById('role-display').textContent = role;
   document.getElementById('dept-display').textContent = dept;
   document.getElementById('empid-display').textContent = empid;
-  document.getElementById('blood-display').textContent = blood;
-  document.getElementById('contact-display').textContent = contact;
-  document.getElementById('valid-display').textContent = valid;
+  document.getElementById('idnum-display').textContent = empid.split('-').pop() ? empid : empid;
   document.getElementById('card-type-display').textContent = type;
-  document.getElementById('idnum-display').textContent = empid;
-  document.getElementById('web-display').textContent = web;
 
-  // Update back card
-  document.getElementById('sig-display').textContent = name;
-  document.getElementById('footer-org').textContent = org.toUpperCase();
-  document.getElementById('footer-addr').innerHTML = `${addr1}<br>${city}<br>${email} | ${web}`;
-
-  // Update logo initials
   const words = org.trim().split(' ');
   const initials = words.length >= 2 ? words[0][0] + words[1][0] : words[0].substring(0,2);
   document.getElementById('logo-init').textContent = initials.toUpperCase();
   document.getElementById('back-logo-init').textContent = initials.toUpperCase();
 
-  // Update org name display (split into lines)
   const orgParts = org.split(' ');
   const line1 = orgParts.slice(0, Math.ceil(orgParts.length/2)).join(' ');
   const line2 = orgParts.slice(Math.ceil(orgParts.length/2)).join(' ');
   document.getElementById('org-display').innerHTML = line1 + (line2 ? '<br>' + line2 : '');
+  document.getElementById('footer-org').textContent = org.toUpperCase();
+  document.getElementById('web-display').textContent = 'www.' + org.replace(/\s+/g,'').toLowerCase().slice(0,12) + '.com';
 
-  // Generate real QR code
   generateQR(empid);
 }
 
 function generateQR(text) {
-  const container = document.getElementById('qr-container');
-  container.innerHTML = ''; // Clear previous QR
-  
-  qrcode = new QRCode(container, {
-    text: text,
-    width: 52,
-    height: 52,
-    colorDark: '#1a1a1a',
-    colorLight: '#ffffff',
-    correctLevel: QRCode.CorrectLevel.M
+  const canvas = document.getElementById('qr-canvas');
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,48,48);
+
+  const size = 6;
+  const modules = 7;
+  const data = [];
+  for(let i=0;i<modules;i++){
+    data[i]=[];
+    for(let j=0;j<modules;j++){
+      data[i][j] = Math.random() > 0.5 ? 1 : 0;
+    }
+  }
+  [[0,0],[0,4],[4,0]].forEach(([r,c])=>{
+    for(let i=-1;i<=3;i++) for(let j=-1;j<=3;j++){
+      if(r+i>=0&&r+i<modules&&c+j>=0&&c+j<modules){
+        data[r+i][c+j] = (i===-1||i===3||j===-1||j===3) ? 1 : (i===0||i===2||j===0||j===2) ? 1 : (i===1&&j===1) ? 1 : 0;
+      }
+    }
   });
+
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0,0,48,48);
+  ctx.fillStyle = '#1a1a1a';
+  const offset = 1;
+  for(let i=0;i<modules;i++){
+    for(let j=0;j<modules;j++){
+      if(data[i][j]===1) ctx.fillRect(offset+j*size, offset+i*size, size-1, size-1);
+    }
+  }
 }
 
-// Initialize QR on page load
-generateQR('EMP-2024-0391');
+generateQR('EMP-0391');
 </script>
