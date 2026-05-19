@@ -318,27 +318,6 @@ def load_from_db():
         return jsonify({'error': str(e)}), 500
 
 
-@app.route('/clear-output', methods=['POST'])
-def clear_output():
-    try:
-        # Clear generated cards from output folder
-        for filename in os.listdir(OUTPUT_FOLDER):
-            file_path = os.path.join(OUTPUT_FOLDER, filename)
-            try:
-                if os.path.isfile(file_path):
-                    os.unlink(file_path)
-            except Exception as e:
-                print(f'Failed to delete {file_path}. Reason: {e}')
-        
-        # Clear generated_cards collection in MongoDB
-        if db is not None:
-            db['generated_cards'].delete_many({})
-            
-        return jsonify({'success': True})
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-
 @app.route('/download/<filename>')
 def download_file(filename):
     return send_from_directory(OUTPUT_FOLDER, filename, as_attachment=True)
