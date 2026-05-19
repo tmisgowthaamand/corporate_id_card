@@ -288,6 +288,35 @@ def get_employee(emp_id):
     return jsonify({'error': 'Employee not found'}), 404
 
 
+@app.route('/db-status')
+def get_db_status():
+    if db is not None:
+        try:
+            client.admin.command('ping')
+            emp_count = db['employees'].count_documents({})
+            gen_count = db['generated_cards'].count_documents({})
+            return jsonify({
+                'connected': True,
+                'employees': emp_count,
+                'generated_cards': gen_count
+            })
+        except Exception as e:
+            return jsonify({'connected': False, 'message': str(e)})
+    return jsonify({'connected': False, 'message': 'Database not connected'})
+
+
+@app.route('/api/load-from-db')
+def load_from_db():
+    if db is None:
+        return jsonify({'error': 'Database not connected'}), 503
+    
+    try:
+        employees = list(db['employees'].find({}))
+        employees = [mongo_serialize(emp) for emp in employees]
+        return jsonify({'success': True, 'employees': employees, 'count': len(employees)})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/download/<filename>')
 def download_file(filename):
     return send_from_directory(OUTPUT_FOLDER, filename, as_attachment=True)
